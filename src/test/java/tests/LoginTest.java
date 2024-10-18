@@ -1,5 +1,7 @@
 package tests;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -19,6 +21,7 @@ public class LoginTest {
     @BeforeMethod
     public void setup() {
         driver = DriverFactory.getDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); 
         driver.get("https://www.saucedemo.com/");
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
@@ -63,14 +66,13 @@ public class LoginTest {
 
     @Test(priority = 5, description = "Verify that user can log out after login")
     public void logoutTest() {
-        // Login with valid credentials
+      
         loginPage.login("standard_user", "secret_sauce");
 
-        // Assuming logout is possible with a menu option
         driver.findElement(By.id("react-burger-menu-btn")).click();
         driver.findElement(By.id("logout_sidebar_link")).click();
 
-        // Verify if user is redirected back to the login page
+       
         Assert.assertTrue(driver.getCurrentUrl().contains("saucedemo.com"), "Logout failed, not redirected to login page");
     }
 }

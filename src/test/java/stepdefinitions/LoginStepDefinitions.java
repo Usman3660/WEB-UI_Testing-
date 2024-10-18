@@ -1,9 +1,15 @@
 package stepdefinitions;
 
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import pages.LoginPage;
 import pages.ProductsPage;
 import utilities.DriverFactory;
@@ -13,6 +19,7 @@ public class LoginStepDefinitions {
     WebDriver driver = DriverFactory.getDriver();
     LoginPage loginPage = new LoginPage(driver);
     ProductsPage productsPage = new ProductsPage(driver);
+    private WebDriverWait wait;
 
     @Given("^the user is on the Sauce Labs Demo App login page$")
     public void givenUserIsOnLoginPage() {
@@ -30,9 +37,11 @@ public class LoginStepDefinitions {
     }
 
     @When("^the user clicks the \"([^\"]*)\" button$")
-    public void whenUserClicksLoginButton(String button) {
-        loginPage.clickLoginButton();
+    public void clickLoginButton() {
+        WebElement loginBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
+        loginBtn.click();  // Perform a regular click
     }
+
 
     @Then("^the user should be redirected to the products page$")
     public void thenUserIsRedirectedToProductsPage() {
